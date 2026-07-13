@@ -9,10 +9,9 @@ const listingSchema=new Schema({
     },
     description:String,
     image:{
-        type:String,
-        default:"https://unsplash.com/photos/a-tall-building-with-a-balcony-and-a-balcony-qmTwtPQtLVg",
-        set: (v) => v==="" ? "https://plus.unsplash.com/premium_photo-1683129807314-95150b5c3fb1?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" : v,
-    },
+        url:String,
+        filename:String,
+            },
     price:Number,
     location:String,
     country:String,
@@ -25,7 +24,18 @@ const listingSchema=new Schema({
     owner:{
         type:Schema.Types.ObjectId,
             ref:"User",
+    },
+    geometry: {
+    type: {
+      type: String, // Don't do `{ location: { type: String } }`
+      enum: ['Point'], // 'location.type' must be 'Point'
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
     }
+}
 });
 
 listingSchema.post("findOneAndDelete", async (listing) => {
